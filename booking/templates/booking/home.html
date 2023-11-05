@@ -1,0 +1,241 @@
+{% extends "booking/booking_layout.html" %}{% load static %} {% block content%}
+<style>
+  .title_part {
+    display: flex;
+    width: 100%;
+  }
+  .now_title {
+    width: 60%;
+    font-size: 25px;
+    font-weight: bold;
+  }
+  .dates {
+    display: flex;
+    margin-left: 50%;
+    width: 40%;
+  }
+  .date_button button {
+    padding: 15px;
+    margin: 0px 10px;
+    font-size: 15px;
+    background-color: #a8a7a7;
+    border: none;
+    width: 80px;
+    border-radius: 5px;
+    color: white;
+    cursor: pointer;
+  }
+  .date_button button:hover {
+    background-color: #d90b00;
+  }
+  #selected {
+    background-color: #d90b00;
+  }
+  .now_movie_list {
+    display: grid;
+    grid-template-columns: 25% 25% 25% 25%;
+    margin-top: 50px;
+  }
+  .movie img {
+    height: 300px;
+    width: 250px;
+    border-radius: 15px;
+  }
+  .movie img:hover {
+    transform: scale(1.1);
+    z-index: -1;
+    cursor: pointer;
+  }
+  .movie_title {
+    font-weight: bold;
+    font-size: 20px;
+    margin: 10px 0px;
+  }
+  .movie_duration {
+    color: red;
+    font-weight: light;
+  }
+  .movie_times {
+    display: grid;
+    grid-template-columns: 29% 29% 29%;
+    margin-top: 10px;
+  }
+  .times button {
+    padding: 5px;
+    width: 80px;
+    font-size: 15px;
+    background-color: green;
+    border: none;
+    border-radius: 5px;
+    color: white;
+    margin-bottom: 10px;
+  }
+  .upcoming_movies {
+    margin-top: 90px;
+  }
+  .select_button {
+    margin-left: 40%;
+  }
+  .button_div {
+    display: flex;
+    border: 0px solid;
+    border-radius: 30px;
+    background-color: #20324f;
+    width: 300px;
+    align-content: center;
+  }
+  .button_div button {
+    cursor: pointer;
+    width: 150px;
+    padding: 10px;
+    font-size: 20px;
+    border-radius: 30px;
+    border: none;
+    background-color: #20324f;
+    color: white;
+  }
+  #active {
+    background-color: red;
+  }
+
+  @media only screen and (max-width: 768px) and (min-width: 100px) {
+    .now_movie_list {
+      display: grid;
+      grid-template-columns: 50% 50%;
+      margin-top: 50px;
+    }
+    .movie img {
+      height: 200px;
+      width: 150px;
+      border-radius: 15px;
+    }
+    .dates {
+      display: flex;
+      margin-left: 20%;
+      width: 40%;
+    }
+    .select_button {
+      margin-left: 20%;
+    }
+  }
+</style>
+<div class="now_showing">
+  <div class="title_part">
+    <div class="now_title">NOW SHOWING</div>
+    <div class="dates">
+      <div class="date_button">
+        <button class="date_select_button today" id="selected">TODAY</button>
+      </div>
+      <div class="date_button">
+        <button class="date_select_button tomorrow">TOMM</button>
+      </div>
+    </div>
+  </div>
+  <div class="now_movie_list">
+    <div class="movie">
+      <div class="movie_img">
+        <img src="{% static "/movie_pic/pardeshi-2.jpg" %}" alt="Movie name" />
+      </div>
+      <div class="movie_title">Pardeshi 2</div>
+      <div class="movie_duration">2 Hours 23 Mins</div>
+      <div class="movie_times">
+        <div class="times"><button type="button">06:20 AM</button></div>
+        <div class="times"><button type="button">11:20 AM</button></div>
+        <div class="times"><button type="button">01:20 PM</button></div>
+        <div class="times"><button type="button">03:20 PM</button></div>
+        <div class="times"><button type="button">05:20 PM</button></div>
+        <div class="times"><button type="button">08:20 PM</button></div>
+      </div>
+    </div>
+    <div class="movie">
+      <div class="movie_img">
+        <img src="{% static "/movie_pic/leo.jpg" %}" alt="Movie name" />
+      </div>
+      <div class="movie_title">leo</div>
+      <div class="movie_duration">2 Hours 23 Mins</div>
+      <div class="movie_times">
+        <div class="times"><button type="button">06:20 AM</button></div>
+        <div class="times"><button type="button">11:20 AM</button></div>
+        <div class="times"><button type="button">01:20 PM</button></div>
+      </div>
+    </div>
+    <div class="movie">
+      <div class="movie_img">
+        <img src="{% static "/movie_pic/pashupati-2.jpg" %}" alt="Movie name" />
+      </div>
+      <div class="movie_title">Pashupati parshad 2</div>
+      <div class="movie_duration">2 Hours 23 Mins</div>
+      <div class="movie_times">
+        <div class="times"><button type="button">06:20 AM</button></div>
+        <div class="times"><button type="button">11:20 AM</button></div>
+        <div class="times"><button type="button">01:20 PM</button></div>
+        <div class="times"><button type="button">11:20 AM</button></div>
+        <div class="times"><button type="button">01:20 PM</button></div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="upcoming_movies">
+  <div class="select_button">
+    <div class="button_div">
+      <div class="nextrelease_button">
+        <button class="next_release" id="active" type="button">
+          Next release
+        </button>
+      </div>
+      <div class="comingsoon_button">
+        <button class="coming_soon" type="button">Coming Soon</button>
+      </div>
+    </div>
+  </div>
+  <div class="now_movie_list">
+    <div class="movie">
+      <div class="movie_img">
+        <a href="{% url "upcoming-movie" 1 %}"><img src="{% static "/movie_pic/pardeshi-2.jpg" %}" alt="Movie name" /></a>
+      </div>
+      <div class="movie_title">Pardeshi 2</div>
+      <div class="movie_duration">Releasing On: November 10</div>
+      <div class="movie_duration">Runtime: 2 Hours 23 Mins</div>
+    </div>
+    <div class="movie">
+      <div class="movie_img">
+        <a href="{% url "upcoming-movie" 1 %}"><img src="{% static "/movie_pic/leo.jpg" %}" alt="Movie name" /></a>
+      </div>
+      <div class="movie_title">leo</div>
+      <div class="movie_duration">Releasing On: November 10</div>
+      <div class="movie_duration">Runtime: 2 Hours 23 Mins</div>
+    </div>
+    <div class="movie">
+      <div class="movie_img">
+        <a href="{% url "upcoming-movie" 1 %}"><img src="{% static "/movie_pic/pashupati-2.jpg" %}" alt="Movie name" /></a>
+      </div>
+      <div class="movie_title">Pashupati parshad 2</div>
+      <div class="movie_duration">Releasing On: November 10</div>
+      <div class="movie_duration">Runtime: 2 Hours 23 Mins</div>
+    </div>
+  </div>
+</div>
+<script>
+  var next_release = document.querySelector(".next_release");
+  var coming_soon = document.querySelector(".coming_soon");
+
+  next_release.addEventListener("click", function (e) {
+    next_release.setAttribute("id", "active");
+    coming_soon.removeAttribute("id");
+  });
+  coming_soon.addEventListener("click", function (e) {
+    coming_soon.setAttribute("id", "active");
+    next_release.removeAttribute("id");
+  });
+  var button_tomorrow = document.querySelector(".tomorrow");
+  var button_today = document.querySelector(".today");
+  button_today.addEventListener("click", function (e) {
+    button_today.setAttribute("id", "selected");
+    button_tomorrow.removeAttribute("id");
+  });
+  button_tomorrow.addEventListener("click", function (e) {
+    button_tomorrow.setAttribute("id", "selected");
+    button_today.removeAttribute("id");
+  });
+</script>
+{% endblock %}

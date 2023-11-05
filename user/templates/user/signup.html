@@ -1,0 +1,129 @@
+{% extends "user/layout.html" %}{% block content %}
+<style>
+  .login_div {
+    text-align: center;
+    width: 50%;
+    margin-left: 24%;
+  }
+  .login_title {
+    border: 0px solid;
+    border-top-left-radius: 15px;
+    border-top-right-radius: 15px;
+    background-color: #d90b00;
+    padding: 15px;
+    font-size: 25px;
+    color: white;
+    font-weight: bold;
+  }
+  form i {
+    margin-left: -30px;
+    cursor: pointer;
+  }
+  .form_div {
+    border-bottom-left-radius: 20px;
+    border-bottom-right-radius: 20px;
+    background-color: #20324f;
+    padding: 10px;
+  }
+  .input_field_div {
+    display: grid;
+    grid-template-columns: auto auto;
+    margin-bottom: 25px;
+  }
+  .input_field input {
+    width: 80%;
+    color: white;
+    padding: 15px 9px;
+    font-size: 17px;
+    background-color: #374a6b;
+    border: none;
+    margin: 5px 0px;
+    border-radius: 9px;
+  }
+  .input_field input:focus {
+    outline: none;
+    background-color: white;
+    color: black;
+  }
+  .footer_form {
+    margin-top: 20px;
+    margin-bottom: 20px;
+  }
+  .submit_button button {
+    padding: 10px 25px;
+    border: none;
+    border-radius: 10px;
+    color: white;
+    margin-bottom: 10px;
+    background-color: #e3020a;
+    font-size: 18px;
+    cursor: pointer;
+  }
+</style>
+<div class="login_div">
+  <div class="login_title">SIGN IN</div>
+  <div class="form_div">
+    <form method="POST">
+      {% csrf_token %}
+      <div class="input_field_div">
+        <div class="input_field">
+          <input name="firstname" type="text" placeholder="First Name" />
+        </div>
+        <div class="input_field">
+          <input name="lastname" type="text" placeholder="Last Name" />
+        </div>
+        <div class="input_field">
+          <input name="username" type="text" placeholder="Username" />
+        </div>
+        <div class="input_field">
+          <input name="email" type="email" placeholder="Email" />
+        </div>
+        <div class="input_field">
+          <input name="mobile" type="text" placeholder="Mobile" />
+        </div>
+        <div class="input_field">
+          <input
+            name="password"
+            id="password"
+            type="password"
+            placeholder="Password (min 4 characters)"
+          />
+          <i class="bi bi-eye-slash" id="togglePassword"></i>
+        </div>
+        <div class="input_field">
+          <input
+            name="confirm_password"
+            id="confirm_password"
+            type="password"
+            placeholder="Confirm Password"
+          />
+          <i class="bi bi-eye-slash" id="toggleConfirmPassword"></i>
+        </div>
+      </div>
+      <div class="submit_button"><button type="submit">Sign Up</button></div>
+    </form>
+  </div>
+</div>
+<script>
+  const togglePassword = document.querySelector("#togglePassword");
+  const password = document.querySelector("#password");
+  togglePassword.addEventListener("click", function (e) {
+    const type =
+      password.getAttribute("type") === "password" ? "text" : "password";
+    password.setAttribute("type", type);
+    this.classList.toggle("bi-eye");
+  });
+  const toggleConfirmPassword = document.querySelector(
+    "#toggleConfirmPassword"
+  );
+  const confirm_password = document.querySelector("#confirm_password");
+  toggleConfirmPassword.addEventListener("click", function (e) {
+    const type =
+      confirm_password.getAttribute("type") === "password"
+        ? "text"
+        : "password";
+    confirm_password.setAttribute("type", type);
+    this.classList.toggle("bi-eye");
+  });
+</script>
+{% endblock %}
