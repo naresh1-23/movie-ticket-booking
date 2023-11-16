@@ -1,0 +1,43 @@
+{% extends "admin_page/admin_layout.html" %}{% block content %}
+<style>
+  th,
+  td {
+    padding: 5px;
+    border: 1px solid black;
+    max-width: 300px;
+  }
+  .poster img {
+    height: 150px;
+    width: 130px;
+  }
+</style>
+<div class="now-showing">
+  <table>
+    <tr>
+      <th>Movie title</th>
+      <th>Director</th>
+      <th>Cast</th>
+      <th>Genre</th>
+      <th>Run time</th>
+      <th>Releasing date</th>
+    </tr>
+    {% for movie in movies %}
+    <tr>
+      <td>
+        <div class="movie_title">
+          <div class="poster">
+            <img src="{{ movie.movie.movie_poster.url }}" />
+          </div>
+          <div class="title">{{ movie.movie.movie_name }}</div>
+        </div>
+      </td>
+      <td>{{ movie.movie.director }}</td>
+      <td>{{ movie.movie.cast }}</td>
+      <td>{{ movie.movie.genre }}</td>
+      <td>{{ movie.movie.runtime }}</td>
+      <td>{{ movie.movie.releasing_date }}</td>
+    </tr>
+    {% endfor %}
+  </table>
+</div>
+{% endblock %}

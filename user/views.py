@@ -19,6 +19,8 @@ def loginView(request):
         if user:
             login(request, user)
             messages.success(request, "Successfully logged in")
+            if user.is_superuser:
+                return redirect("now-showing")
             return redirect("home")
         messages.warning(request, "User doesn't exists")
         return redirect("login")

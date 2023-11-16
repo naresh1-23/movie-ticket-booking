@@ -13,7 +13,6 @@
         padding: 20px;
         box-shadow: 0 10px 5px -2px rgba(0, 0, 0, 0.2);
         margin-left: -6px;
-        overflow-x: hidden;
         margin-right: -6px;
       }
       .name {
@@ -42,42 +41,6 @@
       .main {
         margin: 40px;
       }
-      .footer_movie {
-        margin: 25px -8px -8px -8px;
-        overflow-y: hidden;
-        background-color: black;
-        display: flex;
-        color: white;
-        padding: 0px 50px;
-        overflow-x: hidden;
-      }
-      .websitename {
-        margin-top: 40px;
-        width: 50%;
-        display: flex;
-        font-size: 30px;
-        font-weight: bold;
-      }
-      .contact_us {
-        width: 50%;
-        margin-left: 20%;
-      }
-      .contact_us h2 {
-        margin-left: 30px;
-        font-size: 25px;
-      }
-      .contact_us li {
-        margin: 20px 0px;
-      }
-      @media only screen and (max-width: 768px) and (min-width: 100px) {
-        .footer_movie {
-          display: block;
-        }
-        .contact_us {
-          width: 100%;
-          margin-left: 0px;
-        }
-      }
     </style>
     <link
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
@@ -98,10 +61,6 @@
         <div style="margin: 0px 5px; color: black">Cinemaghar</div>
       </div>
       <div class="login_button">
-        <a href="{% url 'home' %}" style="text-decoration: none; color: black"
-          >Home</a
-        >
-        {% if request.user.is_superuser %}
         <a
           href="{% url 'add-movie' %}"
           style="text-decoration: none; color: black"
@@ -120,7 +79,7 @@
           style="text-decoration: none; color: black"
           >Upcoming Movies</a
         >
-        {% endif %} {% if request.user.is_authenticated %}<a
+        {% if request.user.is_authenticated %}<a
           href="{% url 'home' %}"
           style="text-decoration: none; color: black"
           >Naresh Tamang</a
@@ -143,24 +102,5 @@
     </div>
     {% endif %}
     <div class="main">{% block content %}{% endblock %}</div>
-    <div class="footer_movie">
-      <div class="websitename">
-        <div style="margin: 0px 5px; color: red">Hamro</div>
-        <div style="margin: 0px 5px; color: white">Cinemaghar</div>
-      </div>
-      <div class="contact_us">
-        <h2>Contact us</h2>
-        <ul style="list-style-type: none">
-          <li>
-            <i class="fa-solid fa-location-dot"></i> Hamro Cinemaghar Movies,
-            Gongabu, KTM, Nepal
-          </li>
-          <li>
-            <i class="fa-solid fa-envelope"></i> hamrocinemaghar@gmail.com
-          </li>
-          <li><i class="fa-solid fa-phone"></i> 9812345678</li>
-        </ul>
-      </div>
-    </div>
   </body>
 </html>

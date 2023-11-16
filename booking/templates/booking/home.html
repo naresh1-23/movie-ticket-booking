@@ -104,9 +104,14 @@
       grid-template-columns: 50% 50%;
       margin-top: 50px;
     }
+    .movie_times {
+      display: grid;
+      grid-template-columns: 35% 35%;
+      margin-top: 10px;
+    }
     .movie img {
-      height: 200px;
-      width: 150px;
+      height: 250px;
+      width: 200px;
       border-radius: 15px;
     }
     .dates {
@@ -124,55 +129,28 @@
     <div class="now_title">NOW SHOWING</div>
     <div class="dates">
       <div class="date_button">
-        <button class="date_select_button today" id="selected">TODAY</button>
+        <a href = "{% url "home" %}"><button class="date_select_button today" id="selected">TODAY</button></a>
       </div>
       <div class="date_button">
-        <button class="date_select_button tomorrow">TOMM</button>
+        <a href = "{% url "tomorrow" %}"><button onclick="tomorrow_data_using_ajax()" class="date_select_button tomorrow">TOMM</button></a>
       </div>
     </div>
   </div>
-  <div class="now_movie_list">
+  <div class="now_movie_list" id="now_showing">
+    {% for movie in now_showing_movies %}
     <div class="movie">
       <div class="movie_img">
-        <img src="{% static "/movie_pic/pardeshi-2.jpg" %}" alt="Movie name" />
+        <img src="{{movie.movie.movie_poster.url}}" alt="Movie name" />
       </div>
-      <div class="movie_title">Pardeshi 2</div>
-      <div class="movie_duration">2 Hours 23 Mins</div>
+      <div class="movie_title">{{ movie.movie.movie_name }}</div>
+      <div class="movie_duration">{{ movie.movie.runtime }}</div>
       <div class="movie_times">
-        <div class="times"><button type="button">06:20 AM</button></div>
-        <div class="times"><button type="button">11:20 AM</button></div>
-        <div class="times"><button type="button">01:20 PM</button></div>
-        <div class="times"><button type="button">03:20 PM</button></div>
-        <div class="times"><button type="button">05:20 PM</button></div>
-        <div class="times"><button type="button">08:20 PM</button></div>
+        {% for show_time in movie.show_time.all|dictsort:"time" %}
+        <div class="times"><button type="button">{{ show_time.time }}</button></div>
+        {% endfor %}
       </div>
-    </div>
-    <div class="movie">
-      <div class="movie_img">
-        <img src="{% static "/movie_pic/leo.jpg" %}" alt="Movie name" />
-      </div>
-      <div class="movie_title">leo</div>
-      <div class="movie_duration">2 Hours 23 Mins</div>
-      <div class="movie_times">
-        <div class="times"><button type="button">06:20 AM</button></div>
-        <div class="times"><button type="button">11:20 AM</button></div>
-        <div class="times"><button type="button">01:20 PM</button></div>
-      </div>
-    </div>
-    <div class="movie">
-      <div class="movie_img">
-        <img src="{% static "/movie_pic/pashupati-2.jpg" %}" alt="Movie name" />
-      </div>
-      <div class="movie_title">Pashupati parshad 2</div>
-      <div class="movie_duration">2 Hours 23 Mins</div>
-      <div class="movie_times">
-        <div class="times"><button type="button">06:20 AM</button></div>
-        <div class="times"><button type="button">11:20 AM</button></div>
-        <div class="times"><button type="button">01:20 PM</button></div>
-        <div class="times"><button type="button">11:20 AM</button></div>
-        <div class="times"><button type="button">01:20 PM</button></div>
-      </div>
-    </div>
+    </div>   
+    {% endfor %}
   </div>
 </div>
 <div class="upcoming_movies">
@@ -189,30 +167,18 @@
     </div>
   </div>
   <div class="now_movie_list">
+    {% for movie in movies %}
     <div class="movie">
       <div class="movie_img">
-        <a href="{% url "upcoming-movie" 1 %}"><img src="{% static "/movie_pic/pardeshi-2.jpg" %}" alt="Movie name" /></a>
+        <a href="{% url "upcoming-movie" movie.pk %}">
+          <img src="{{movie.movie_poster.url}}" alt="Movie name" />
+        </a>
       </div>
-      <div class="movie_title">Pardeshi 2</div>
-      <div class="movie_duration">Releasing On: November 10</div>
-      <div class="movie_duration">Runtime: 2 Hours 23 Mins</div>
+      <div class="movie_title">{{ movie.movie_name }}</div>
+      <div class="movie_duration">Releasing On: {{ movie.releasing_date }}</div>
+      <div class="movie_duration">Runtime: {{ movie.runtime }}</div>
     </div>
-    <div class="movie">
-      <div class="movie_img">
-        <a href="{% url "upcoming-movie" 1 %}"><img src="{% static "/movie_pic/leo.jpg" %}" alt="Movie name" /></a>
-      </div>
-      <div class="movie_title">leo</div>
-      <div class="movie_duration">Releasing On: November 10</div>
-      <div class="movie_duration">Runtime: 2 Hours 23 Mins</div>
-    </div>
-    <div class="movie">
-      <div class="movie_img">
-        <a href="{% url "upcoming-movie" 1 %}"><img src="{% static "/movie_pic/pashupati-2.jpg" %}" alt="Movie name" /></a>
-      </div>
-      <div class="movie_title">Pashupati parshad 2</div>
-      <div class="movie_duration">Releasing On: November 10</div>
-      <div class="movie_duration">Runtime: 2 Hours 23 Mins</div>
-    </div>
+    {% endfor %}
   </div>
 </div>
 <script>
@@ -229,13 +195,16 @@
   });
   var button_tomorrow = document.querySelector(".tomorrow");
   var button_today = document.querySelector(".today");
-  button_today.addEventListener("click", function (e) {
-    button_today.setAttribute("id", "selected");
-    button_tomorrow.removeAttribute("id");
-  });
-  button_tomorrow.addEventListener("click", function (e) {
+  var tom = "{{tom}}";
+  if(tom == "True"){
     button_tomorrow.setAttribute("id", "selected");
     button_today.removeAttribute("id");
-  });
+  }
+  else{
+    button_today.addEventListener("click", function (e) {
+      button_today.setAttribute("id", "selected");
+      button_tomorrow.removeAttribute("id");
+    });
+  }
 </script>
 {% endblock %}

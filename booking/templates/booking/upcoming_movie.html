@@ -1,3 +1,73 @@
 {% extends "booking/booking_layout.html" %}{% load static %} {% block content%}
-<div class="movie_info"></div>
+<style>
+  .movie_info {
+    display: flex;
+  }
+  .trailer_video {
+    margin-right: 30px;
+  }
+  .movie_title {
+    font-weight: bold;
+    font-size: 40px;
+    margin-bottom: 20px;
+  }
+  .info {
+    font-size: 20px;
+    margin-bottom: 20px;
+  }
+  .key {
+    color: red;
+    width: 150px;
+  }
+  .value {
+    width: 500px;
+  }
+  td {
+    font-size: 18px;
+    height: 25px;
+  }
+  iframe {
+    width: 600px;
+    height: 350px;
+  }
+</style>
+<div class="movie_info">
+  <div class="trailer_video">
+    <iframe
+      width="560"
+      height="315"
+      src="{{movie.trailer_iframe}}"
+      title="YouTube video player"
+      frameborder="0"
+      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+      allowfullscreen
+    ></iframe>
+  </div>
+  <div class="detail">
+    <div class="movie_title">{{ movie.movie_name }}</div>
+    <div class="info">{{movie.movie_description}}</div>
+    <table>
+      <tr>
+        <td class="key">Releasing Date:</td>
+        <td class="value">{{ movie.releasing_date }}</td>
+      </tr>
+      <tr>
+        <td class="key">Run Time:</td>
+        <td class="value">{{ movie.runtime }}</td>
+      </tr>
+      <tr>
+        <td class="key">Director:</td>
+        <td class="value">{{ movie.director }}</td>
+      </tr>
+      <tr>
+        <td class="key">Genre:</td>
+        <td class="value">{{ movie.genre }}</td>
+      </tr>
+      <tr>
+        <td class="key">Cast:</td>
+        <td class="value">{{ movie.cast }}</td>
+      </tr>
+    </table>
+  </div>
+</div>
 {% endblock %}

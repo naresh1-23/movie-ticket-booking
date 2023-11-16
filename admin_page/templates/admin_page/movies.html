@@ -1,0 +1,58 @@
+{% extends "admin_page/admin_layout.html" %}{% block content %}
+<style>
+  th,
+  td {
+    padding: 5px;
+    border: 1px solid black;
+    max-width: 300px;
+  }
+  .poster img {
+    height: 150px;
+    width: 130px;
+  }
+  td button {
+    margin: 10px;
+    border-radius: 10px;
+    width: 200px;
+    border: none;
+    height: 40px;
+    color: white;
+  }
+</style>
+<div class="now-showing">
+  <table>
+    <tr>
+      <th>Movie title</th>
+      <th>Director</th>
+      <th>Cast</th>
+      <th>Genre</th>
+      <th>Run time</th>
+      <th>Releasing date</th>
+      <th>Action</th>
+    </tr>
+    {% for movie in movies %}
+    <tr>
+      <td>
+        <div class="movie_title">
+          <div class="poster"><img src="{{ movie.movie_poster.url }}" /></div>
+          <div class="title">{{ movie.movie_name }}</div>
+        </div>
+      </td>
+      <td>{{ movie.director }}</td>
+      <td>{{ movie.cast }}</td>
+      <td>{{ movie.genre }}</td>
+      <td>{{ movie.runtime }}</td>
+      <td>{{ movie.releasing_date }}</td>
+      <td>
+        <a href="{% url 'add-now-showing' movie.id %}"
+          ><button style="background-color: orange">
+            Add to now showing
+          </button></a
+        >
+        <button style="background-color: red">Delete</button>
+      </td>
+    </tr>
+    {% endfor %}
+  </table>
+</div>
+{% endblock %}
