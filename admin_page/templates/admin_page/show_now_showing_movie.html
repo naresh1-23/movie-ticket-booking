@@ -20,6 +20,7 @@
       <th>Genre</th>
       <th>Run time</th>
       <th>Releasing date</th>
+      <th>Action</th>
     </tr>
     {% for movie in movies %}
     <tr>
@@ -36,6 +37,14 @@
       <td>{{ movie.movie.genre }}</td>
       <td>{{ movie.movie.runtime }}</td>
       <td>{{ movie.movie.releasing_date }}</td>
+      <td>
+        <a href="{% url 'add-now-showing' movie.movie.id %}"
+          ><button style="background-color: orange">Add show</button></a
+        >
+        <a href="{% url 'delete-now-showing' movie.movie.id %}"
+          ><button style="background-color: red">Delete</button></a
+        >
+      </td>
     </tr>
     {% endfor %}
   </table>

@@ -63,7 +63,7 @@
   .times button {
     padding: 5px;
     width: 80px;
-    font-size: 15px;
+    font-size: 13px;
     background-color: green;
     border: none;
     border-radius: 5px;
@@ -81,8 +81,9 @@
     border: 0px solid;
     border-radius: 30px;
     background-color: #20324f;
-    width: 300px;
+    width: 150px;
     align-content: center;
+    margin-left: 20px;
   }
   .button_div button {
     cursor: pointer;
@@ -132,7 +133,7 @@
         <a href = "{% url "home" %}"><button class="date_select_button today" id="selected">TODAY</button></a>
       </div>
       <div class="date_button">
-        <a href = "{% url "tomorrow" %}"><button onclick="tomorrow_data_using_ajax()" class="date_select_button tomorrow">TOMM</button></a>
+        <a href = "{% url "tomorrow" %}"><button class="date_select_button tomorrow">TOMM</button></a>
       </div>
     </div>
   </div>
@@ -161,9 +162,6 @@
           Next release
         </button>
       </div>
-      <div class="comingsoon_button">
-        <button class="coming_soon" type="button">Coming Soon</button>
-      </div>
     </div>
   </div>
   <div class="now_movie_list">
@@ -182,17 +180,6 @@
   </div>
 </div>
 <script>
-  var next_release = document.querySelector(".next_release");
-  var coming_soon = document.querySelector(".coming_soon");
-
-  next_release.addEventListener("click", function (e) {
-    next_release.setAttribute("id", "active");
-    coming_soon.removeAttribute("id");
-  });
-  coming_soon.addEventListener("click", function (e) {
-    coming_soon.setAttribute("id", "active");
-    next_release.removeAttribute("id");
-  });
   var button_tomorrow = document.querySelector(".tomorrow");
   var button_today = document.querySelector(".today");
   var tom = "{{tom}}";
@@ -201,10 +188,8 @@
     button_today.removeAttribute("id");
   }
   else{
-    button_today.addEventListener("click", function (e) {
       button_today.setAttribute("id", "selected");
       button_tomorrow.removeAttribute("id");
-    });
   }
 </script>
 {% endblock %}

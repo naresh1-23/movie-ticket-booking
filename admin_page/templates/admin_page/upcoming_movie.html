@@ -49,7 +49,9 @@
             Add to now showing
           </button></a
         >
-        <button style="background-color: red">Delete</button>
+        <a href="{% url 'delete-movie' movie.id %}"
+          ><button style="background-color: red">Delete</button></a
+        >
       </td>
     </tr>
     {% endfor %}

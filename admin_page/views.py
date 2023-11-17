@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.contrib import messages
 from .models import Movie, NowShowing, ShowTime
 from datetime import datetime, timedelta
-
+from django.utils import timezone
 
 # Create your views here.
 def now_showing(request):
@@ -50,6 +50,11 @@ def add_now_showing(request, pk):
         date = request.POST["date"]
         selected_date = datetime.strptime(date, "%Y-%m-%d").date()
         show_time_check = ShowTime.objects.filter(time = time ,date = date).first()
+        current_time_string = timezone.now().now().strftime("%H:%M %P")
+        current_time = datetime.strptime(current_time_string, "%H:%M %p").time()
+        selected_time = datetime.strptime(time, "%H:%M").time()
+        print(current_time)
+        print(selected_time)
         if date == "" or time == "":
             messages.warning(request, "Fields cannot be empty")
             return redirect("add-now-showing", pk = pk)
@@ -59,6 +64,9 @@ def add_now_showing(request, pk):
         else:
             if movie.releasing_date > selected_date:
                 messages.warning(request, "the movie is not yet to release")
+                return redirect("add-now-showing", pk = pk)
+            if current_time > selected_time and selected_date == datetime.now().date():
+                messages.warning(request, "Please select appropriate time")
                 return redirect("add-now-showing", pk = pk)
             else:
                 now_showing_check = NowShowing.objects.filter(running_date=date,movie=movie).first()
@@ -77,3 +85,15 @@ def add_now_showing(request, pk):
                 messages.success(request, "Movie successfully added to now showing")
                 return redirect("now-showing")
     return render(request, "admin_page/add_now_showing.html", {"movie": movie})
+
+
+def delete_movie(request, pk):
+    movie = Movie.objects.filter(id = pk).first()
+    movie.delete()
+    return redirect("movies")
+
+
+def delete_now_showing_movie(request, pk):
+    movies = NowShowing.objects.filter(movie = pk)
+    movies.delete()
+    return redirect("now-showing")

@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from admin_page.models import Movie, NowShowing
+from admin_page.models import Movie, NowShowing, ShowTime
 from datetime import datetime, timedelta
 from django.db.models import Count
 import json
@@ -7,6 +7,10 @@ from django.http import HttpResponse
 
 
 def home(request):
+    delete_movie = NowShowing.objects.filter(running_date__lt = datetime.now().date())
+    delete_movie.delete()
+    delete_showtime = ShowTime.objects.filter(date__lt = datetime.now().date())
+    delete_showtime.delete()
     movies = Movie.objects.filter(releasing_date__gt = datetime.now().date())
     now_showing_movies = NowShowing.objects.filter(running_date=datetime.now().date())
     tom = False
