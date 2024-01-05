@@ -27,3 +27,18 @@ def tomorrow(request):
     now_showing_movies = NowShowing.objects.filter(running_date=tomorrow)
     tom = True
     return render(request, "booking/home.html", {"now_showing_movies": now_showing_movies, "movies": movies, "tom": tom})
+
+
+def seat_booking(request, pk, tom, showtime):
+    movie = Movie.objects.filter(id = pk).first()
+    showtime_obj = ShowTime.objects.filter(time = showtime).first()
+    if tom == 'True':
+        tomorrow = datetime.now().date() + timedelta(days=1)
+        now_showing_movies = NowShowing.objects.filter(running_date=tomorrow, movie=movie).first()
+
+        tomm = True
+    else:
+        now_showing_movies = NowShowing.objects.filter(running_date=datetime.now().date(), movie = movie).first()
+        tomm = False 
+    seat_range = [1,2,3,4,5,6,7,8]
+    return render(request,"booking/seat_booking.html", {'movie': movie, "now_showing_movies": now_showing_movies,"tomm": tomm, "seat_range": seat_range , "showtime_obj": showtime_obj.time})

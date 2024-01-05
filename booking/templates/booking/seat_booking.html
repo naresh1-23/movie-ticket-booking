@@ -1,0 +1,363 @@
+{% extends "booking/booking_layout.html" %}{% load static %} {% block content%}
+<style>
+  .movie_info {
+    display: flex;
+    border-bottom: 1px solid black;
+    padding-bottom: 25px;
+  }
+  .trailer_video {
+    margin-right: 30px;
+  }
+  .movie_title {
+    font-weight: bold;
+    font-size: 40px;
+    margin-bottom: 20px;
+  }
+  .info {
+    font-size: 20px;
+    margin-bottom: 20px;
+  }
+  .key {
+    color: red;
+    width: 150px;
+  }
+  .value {
+    width: 500px;
+  }
+  td {
+    font-size: 18px;
+    height: 25px;
+  }
+  iframe {
+    width: 600px;
+    height: 350px;
+  }
+  .times button {
+    padding: 5px;
+    width: 80px;
+    font-size: 13px;
+    background-color: green;
+    border: none;
+    border-radius: 5px;
+    color: white;
+    margin-bottom: 10px;
+  }
+  #all-showtime {
+    margin-left: 35%;
+    margin-top: 25px;
+    display: grid;
+    grid-template-columns: 100px 100px 100px 100px;
+    text-align: center;
+  }
+  .screen {
+    margin-top: 25px;
+    text-align: center;
+    background-color: red;
+    width: 50%;
+    height: 30px;
+    margin-left: 25%;
+    border-top-left-radius: 50% 30px;
+    border-top-right-radius: 50% 30px;
+    font-weight: bolder;
+    font-size: 25px;
+    color: white;
+  }
+  ol {
+    list-style: none;
+    margin: 0px;
+    padding: 0px;
+  }
+  .row_seats {
+    margin-top: 5px;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify_content: flex-start;
+  }
+  .seats {
+    margin-top: 50px;
+    margin-left: 25.5%;
+    width: 50%;
+  }
+  .seat {
+    display: flex;
+    flex: 0 0 11%;
+    position: relative;
+  }
+  .seat label {
+    display: block;
+    position: relative;
+    width: 60%;
+    text-align: center;
+    font-size: 14px;
+    font-weight: bolder;
+    line-height: 1.5rem;
+    padding: 4px 0;
+    background: #5bfc60;
+    color: black;
+    border-radius: 5px;
+  }
+  .seat label:hover {
+    cursor: pointer;
+    box-shadow: 0 0 0px 2px green;
+  }
+  .seat input[type="checkbox"] {
+    position: absolute;
+  }
+  .seat input[type="checkbox"]:checked + label {
+    background: #656e65;
+  }
+  .seat:nth-child(4) {
+    margin-right: 14%;
+  }
+  .ticket_detail {
+    margin-top: 25px;
+    margin-left: 5%;
+  }
+  .ticket_detail td,
+  .ticket_detail tr,
+  .ticket_detail table,
+  .ticket_detail th {
+    border: 1px solid black;
+    text-align: center;
+  }
+  .ticket_detail th {
+    font-size: 20px;
+  }
+  .ticket_detail td {
+    font-size: 19px;
+  }
+  .ticket_detail td,
+  .ticket_detail tr,
+  .ticket_detail th {
+    width: 300px;
+    height: 50px;
+  }
+  .reserve {
+    margin-left: 43%;
+    margin-top: 25px;
+  }
+  .reserve_button[disabled] {
+    opacity: 0.4;
+  }
+  .reserve_button {
+    cursor: pointer;
+    width: 150px;
+    padding: 10px;
+    font-size: 20px;
+    border-radius: 30px;
+    border: none;
+    background-color: #20324f;
+    color: white;
+  }
+</style>
+<div class="movie_info">
+  <div class="trailer_video">
+    <iframe
+      width="560"
+      height="315"
+      src="{{movie.trailer_iframe}}"
+      title="YouTube video player"
+      frameborder="0"
+      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+      allowfullscreen
+    ></iframe>
+  </div>
+  <div class="detail">
+    <div class="movie_title">{{ movie.movie_name }}</div>
+    <div class="info">{{movie.movie_description}}</div>
+    <table>
+      <tr>
+        <td class="key">Releasing Date:</td>
+        <td class="value">{{ movie.releasing_date }}</td>
+      </tr>
+      <tr>
+        <td class="key">Run Time:</td>
+        <td class="value">{{ movie.runtime }}</td>
+      </tr>
+      <tr>
+        <td class="key">Director:</td>
+        <td class="value">{{ movie.director }}</td>
+      </tr>
+      <tr>
+        <td class="key">Genre:</td>
+        <td class="value">{{ movie.genre }}</td>
+      </tr>
+      <tr>
+        <td class="key">Cast:</td>
+        <td class="value">{{ movie.cast }}</td>
+      </tr>
+    </table>
+  </div>
+</div>
+<div id="all-showtime">
+  {% for now_showing_movie in now_showing_movies.show_time.all|dictsort:"time"%}
+  <div class="times">
+    <a href="{% url 'seat-booking' movie.id tomm now_showing_movie.time %}"
+      ><button type="button">{{ now_showing_movie.time }}</button></a
+    >
+  </div>
+  {% endfor %}
+</div>
+<div class="seat_div" style="border-top: 1px solid black">
+  <div class="screen">Screen</div>
+  <div class="seats">
+    <ol class="row_seats">
+      {% for i in seat_range %}
+      <li class="seat">
+        <input
+          onclick="select_seat('{{i}}A')"
+          type="checkbox"
+          id="{{i}}A"
+        /><label for="{{i}}A">{{i}}A</label>
+      </li>
+      {% endfor %}
+    </ol>
+    <ol class="row_seats">
+      {% for i in seat_range %}
+      <li class="seat">
+        <input
+          onclick="select_seat('{{i}}B')"
+          type="checkbox"
+          id="{{i}}B"
+        /><label for="{{i}}B">{{i}}B</label>
+      </li>
+      {% endfor %}
+    </ol>
+    <ol class="row_seats">
+      {% for i in seat_range %}
+      <li class="seat">
+        <input
+          onclick="select_seat('{{i}}C')"
+          type="checkbox"
+          id="{{i}}C"
+        /><label for="{{i}}C">{{i}}C</label>
+      </li>
+      {% endfor %}
+    </ol>
+    <ol class="row_seats">
+      {% for i in seat_range %}
+      <li class="seat">
+        <input
+          onclick="select_seat('{{i}}D')"
+          type="checkbox"
+          id="{{i}}D"
+        /><label for="{{i}}D">{{i}}D</label>
+      </li>
+      {% endfor %}
+    </ol>
+    <ol class="row_seats">
+      {% for i in seat_range %}
+      <li class="seat">
+        <input
+          onclick="select_seat('{{i}}E')"
+          type="checkbox"
+          id="{{i}}E"
+        /><label for="{{i}}E">{{i}}E</label>
+      </li>
+      {% endfor %}
+    </ol>
+    <ol class="row_seats">
+      {% for i in seat_range %}
+      <li class="seat">
+        <input
+          onclick="select_seat('{{i}}F')"
+          type="checkbox"
+          id="{{i}}F"
+        /><label for="{{i}}F">{{i}}F</label>
+      </li>
+      {% endfor %}
+    </ol>
+    <ol class="row_seats">
+      {% for i in seat_range %}
+      <li class="seat">
+        <input
+          onclick="select_seat('{{i}}G')"
+          type="checkbox"
+          id="{{i}}G"
+        /><label for="{{i}}G">{{i}}G</label>
+      </li>
+      {% endfor %}
+    </ol>
+    <ol class="row_seats">
+      {% for i in seat_range %}
+      <li class="seat">
+        <input
+          onclick="select_seat('{{i}}H')"
+          type="checkbox"
+          id="{{i}}H"
+        /><label for="{{i}}H">{{i}}H</label>
+      </li>
+      {% endfor %}
+    </ol>
+    <ol class="row_seats">
+      {% for i in seat_range %}
+      <li class="seat">
+        <input
+          onclick="select_seat('{{i}}I')"
+          type="checkbox"
+          id="{{i}}I"
+        /><label for="{{i}}I">{{i}}I</label>
+      </li>
+      {% endfor %}
+    </ol>
+    <ol class="row_seats">
+      {% for i in seat_range %}
+      <li class="seat">
+        <input
+          onclick="select_seat('{{i}}J')"
+          type="checkbox"
+          id="{{i}}J"
+        /><label for="{{i}}J">{{i}}J</label>
+      </li>
+      {% endfor %}
+    </ol>
+  </div>
+</div>
+<div class="ticket_detail">
+  <table>
+    <tr>
+      <th>Movie name</th>
+      <th>Show time</th>
+      <th>Price</th>
+      <th>Selected seat</th>
+    </tr>
+    <tr>
+      <td>{{movie.movie_name}}</td>
+      <td>{{showtime_obj}}</td>
+      <td id="seat_names"></td>
+      <td id="costs"></td>
+    </tr>
+  </table>
+  <div class="reserve">
+    <button type="button" class="reserve_button" disabled id="reserve">
+      Reserve
+    </button>
+  </div>
+</div>
+<script>
+  var selected_seat = [];
+  var cost = 0;
+  var button_reserve = document.getElementById("reserve");
+  function select_seat(seat_name) {
+    var selected_checkbox = document.getElementById(seat_name).checked;
+    if (!selected_checkbox) {
+      var index = selected_seat.indexOf(seat_name);
+      selected_seat.splice(index, 1);
+      cost = cost - 250;
+    } else {
+      selected_seat.push(seat_name);
+      cost = cost + 250;
+    }
+    if (cost == 0) {
+      button_reserve.disabled = true;
+    } else {
+      button_reserve.disabled = false;
+    }
+    var display = document.getElementById("seat_names");
+    display.innerHTML = selected_seat.toString();
+    var cost_display = document.getElementById("costs");
+    cost_display.innerHTML = "Rs " + cost;
+  }
+</script>
+{% endblock %}

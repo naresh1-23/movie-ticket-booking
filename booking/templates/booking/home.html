@@ -147,7 +147,7 @@
       <div class="movie_duration">{{ movie.movie.runtime }}</div>
       <div class="movie_times">
         {% for show_time in movie.show_time.all|dictsort:"time" %}
-        <div class="times"><button type="button">{{ show_time.time }}</button></div>
+        <div class="times"><a href="{% url 'seat-booking' movie.movie.id tom show_time.time %}"><button type="button">{{ show_time.time }}</button></a></div>
         {% endfor %}
       </div>
     </div>   
