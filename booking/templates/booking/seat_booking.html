@@ -208,8 +208,8 @@
         <input
           onclick="select_seat('{{i}}A')"
           type="checkbox"
-          id="{{i}}A"
-        /><label for="{{i}}A">{{i}}A</label>
+          id="{{i}}A" class="{{i}}A"
+        /><label class="{{i}}A"  for="{{i}}A">{{i}}A</label>
       </li>
       {% endfor %}
     </ol>
@@ -219,8 +219,8 @@
         <input
           onclick="select_seat('{{i}}B')"
           type="checkbox"
-          id="{{i}}B"
-        /><label for="{{i}}B">{{i}}B</label>
+          id="{{i}}B" class="{{i}}B"
+        /><label class="{{i}}B" for="{{i}}B">{{i}}B</label>
       </li>
       {% endfor %}
     </ol>
@@ -230,8 +230,8 @@
         <input
           onclick="select_seat('{{i}}C')"
           type="checkbox"
-          id="{{i}}C"
-        /><label for="{{i}}C">{{i}}C</label>
+          id="{{i}}C" class="{{i}}C"
+        /><label class="{{i}}C" for="{{i}}C">{{i}}C</label>
       </li>
       {% endfor %}
     </ol>
@@ -241,8 +241,8 @@
         <input
           onclick="select_seat('{{i}}D')"
           type="checkbox"
-          id="{{i}}D"
-        /><label for="{{i}}D">{{i}}D</label>
+          id="{{i}}D" class="{{i}}D"
+        /><label class="{{i}}D" for="{{i}}D">{{i}}D</label>
       </li>
       {% endfor %}
     </ol>
@@ -252,8 +252,8 @@
         <input
           onclick="select_seat('{{i}}E')"
           type="checkbox"
-          id="{{i}}E"
-        /><label for="{{i}}E">{{i}}E</label>
+          id="{{i}}E" class="{{i}}E"
+        /><label class="{{i}}E" for="{{i}}E">{{i}}E</label>
       </li>
       {% endfor %}
     </ol>
@@ -263,8 +263,8 @@
         <input
           onclick="select_seat('{{i}}F')"
           type="checkbox"
-          id="{{i}}F"
-        /><label for="{{i}}F">{{i}}F</label>
+          id="{{i}}F" class="{{i}}F"
+        /><label class="{{i}}F" for="{{i}}F">{{i}}F</label>
       </li>
       {% endfor %}
     </ol>
@@ -274,8 +274,8 @@
         <input
           onclick="select_seat('{{i}}G')"
           type="checkbox"
-          id="{{i}}G"
-        /><label for="{{i}}G">{{i}}G</label>
+          id="{{i}}G" class="{{i}}G"
+        /><label class="{{i}}G" for="{{i}}G">{{i}}G</label>
       </li>
       {% endfor %}
     </ol>
@@ -285,8 +285,8 @@
         <input
           onclick="select_seat('{{i}}H')"
           type="checkbox"
-          id="{{i}}H"
-        /><label for="{{i}}H">{{i}}H</label>
+          id="{{i}}H" class="{{i}}H"
+        /><label class="{{i}}H" for="{{i}}H">{{i}}H</label>
       </li>
       {% endfor %}
     </ol>
@@ -296,8 +296,8 @@
         <input
           onclick="select_seat('{{i}}I')"
           type="checkbox"
-          id="{{i}}I"
-        /><label for="{{i}}I">{{i}}I</label>
+          id="{{i}}I" class="{{i}}I"
+        /><label class="{{i}}I" for="{{i}}I">{{i}}I</label>
       </li>
       {% endfor %}
     </ol>
@@ -307,8 +307,8 @@
         <input
           onclick="select_seat('{{i}}J')"
           type="checkbox"
-          id="{{i}}J"
-        /><label for="{{i}}J">{{i}}J</label>
+          id="{{i}}J" class="{{i}}J"
+        /><label class="{{i}}J" for="{{i}}J">{{i}}J</label>
       </li>
       {% endfor %}
     </ol>
@@ -342,6 +342,21 @@
   var selected_seat = [];
   var cost = 0;
   var button_reserve = document.getElementById("reserve");
+  var bookedSeats = {{ booked_seats|safe }};
+  var user = "{{request.user.id}}"
+  for (var i = 0; i<bookedSeats.length; i++) {
+    var bookedSeat = bookedSeats[i];
+    var divelement  = document.getElementsByClassName(bookedSeat.fields.seat);
+    if(user == bookedSeat.fields.user){
+      divelement[0].style.background = "yellow";
+    divelement[1].style.background = "yellow";
+    }
+    else{
+    divelement[0].style.background = "red";
+    divelement[1].style.background = "red";}
+    divelement[0].disabled = true;
+  }
+  
   function select_seat(seat_name) {
     var selected_checkbox = document.getElementById(seat_name).checked;
     if (!selected_checkbox) {

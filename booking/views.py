@@ -5,6 +5,8 @@ from django.db.models import Count
 import json
 from django.http import HttpResponse
 from django.contrib import messages
+from django.core.serializers import serialize
+
 
 
 def home(request):
@@ -50,7 +52,11 @@ def seat_booking(request, pk, tom, showtime):
             book.save()
         messages.success(request, "Seat successfully booked")
         return redirect("home")
+    booked_seats = serialize('json',Booked.objects.filter(show = now_showing_movies, time=showtime_obj))
     seat_range = [1,2,3,4,5,6,7,8]
-    return render(request,"booking/seat_booking.html", {'movie': movie, "now_showing_movies": now_showing_movies,"tomm": tomm, "seat_range": seat_range , "showtime_obj": showtime_obj.time})
+    return render(request,"booking/seat_booking.html", {'movie': movie, "now_showing_movies": now_showing_movies,"tomm": tomm, "seat_range": seat_range , "showtime_obj": showtime_obj.time, "booked_seats": booked_seats})
 
+
+def profile(request):
+    return render(request, "booking/profile.html")
 
