@@ -7,6 +7,7 @@ import json
 from django.http import HttpResponse
 from django.contrib import messages
 from django.core.serializers import serialize
+from django.contrib.auth.hashers import make_password, check_password
 
 
 
@@ -63,3 +64,51 @@ def profile(request, pk):
     booked = Booked.objects.filter(user = user)
     return render(request, "booking/profile.html", {"user": user, "booked": booked})
 
+def editProfile(request, pk):
+    user = User.objects.filter(id = pk).first()
+    if request.method == "POST":
+        first_name = request.POST["firstname"]
+        last_name = request.POST["lastname"]
+        mobile_number =request.POST["mobile"]
+        username = request.POST["username"]
+        email = request.POST["email"]
+        if first_name == "" or last_name == '' or email == "" or mobile_number == "" or username == "":
+            messages.warning(request, "Fields cannot be empty")
+            return redirect("editprofile", pk = pk)
+        else:
+            user.first_name = first_name
+            user.last_name = last_name
+            user.mobile_number = mobile_number
+            user.username = username
+            user.email = email
+            user.save()
+            messages.success(request, "Data successfully changed")
+            return redirect("profile", pk = pk)
+    return render(request, "booking/edit_profile.html")
+
+
+def changePassword(request):
+    if request.user.is_authenticated:
+        user = request.user
+        if request.method == 'POST':
+            old_password = request.POST["old_password"]
+            new_password = request.POST["new_password"]
+            confirm_password = request.POST["confirm_password"]
+            if old_password == "" or new_password == "" or confirm_password == "":
+                messages.warning(request, "Fields cannot be empty")
+                return redirect("change-password")
+            elif not check_password(old_password, user.password):
+                messages.warning(request, "Old Password didn't matched")
+                return redirect("change-password")
+            elif new_password != confirm_password:
+                messages.warning(request, "Password didn't matched")
+                return redirect("change-password")
+            else:
+                user.password = make_password(new_password)
+                user.save()
+                messages.success(request, "password successfully changed")
+                return redirect("profile", pk = user.id)
+        return render(request, "booking/changePassword.html")
+    else:
+        messages.warning(request, "Login first")
+        return redirect("login")

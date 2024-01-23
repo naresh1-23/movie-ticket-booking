@@ -13,11 +13,6 @@
         cursor: pointer;
         transition: all 0.5s;
     }
-    .btn {
-        height: 140px;
-        width: 140px;
-        border-radius: 50%
-    }
     
     .name {
         font-size: 22px;
@@ -30,7 +25,8 @@
         border: none;
         background-color: #000;
         color: #aeaeae;
-        font-size: 15px
+        font-size: 15px;
+        margin: 25px
     }
     
     .text span {
@@ -71,7 +67,10 @@
             <span class="name mt-3">Name: {{ user.first_name }} {{ user.last_name }}</span> 
             <span class="name mt-3">Email: {{ user.email }}</span> 
             <div class=" d-flex mt-2"> 
-                <button class="btn1 btn-dark">Edit Profile</button> 
+                <button class="btn1 btn-dark"><a style = "text-decoration: none;color: #aeaeae;
+                    font-size: 15px" href = "{% url "editprofile" user.id %}">Edit Profile</a></button>
+                    <button class="btn1 btn-dark"><a style = "text-decoration: none;color: #aeaeae;
+                        font-size: 15px" href = "{% url "change-password" %}">Change Password</a></button> 
             </div> 
             <div class="ticket_detail mt-3"> 
                 {% if booked %}
