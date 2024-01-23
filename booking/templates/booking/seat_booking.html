@@ -315,25 +315,28 @@
   </div>
 </div>
 <div class="ticket_detail">
+  <form method = "post">
+    {%csrf_token%}
   <table>
     <tr>
       <th>Movie name</th>
       <th>Show time</th>
+      <th>Selected Seat</th>
       <th>Price</th>
-      <th>Selected seat</th>
     </tr>
     <tr>
       <td>{{movie.movie_name}}</td>
       <td>{{showtime_obj}}</td>
-      <td id="seat_names"></td>
+      <td><input type = "text" id="seat_names" name = "seat" readonly style = "border: none;text-align: center"/></td>
       <td id="costs"></td>
     </tr>
   </table>
   <div class="reserve">
-    <button type="button" class="reserve_button" disabled id="reserve">
+    <button type="submit" class="reserve_button" disabled id="reserve">
       Reserve
     </button>
   </div>
+</form>
 </div>
 <script>
   var selected_seat = [];
@@ -355,9 +358,10 @@
       button_reserve.disabled = false;
     }
     var display = document.getElementById("seat_names");
-    display.innerHTML = selected_seat.toString();
+    display.value = selected_seat.toString();
     var cost_display = document.getElementById("costs");
     cost_display.innerHTML = "Rs " + cost;
   }
+  
 </script>
 {% endblock %}

@@ -44,7 +44,7 @@ def movies(request):
     return render(request, "admin_page/movies.html", {"movies": movies})
 
 def add_now_showing(request, pk):
-    movie = Movie.objects.filter(id = pk).first()
+    movie = Movie.objects.filter(id = pk).first() 
     if request.method == "POST":
         time = request.POST["time"]
         date = request.POST["date"]
