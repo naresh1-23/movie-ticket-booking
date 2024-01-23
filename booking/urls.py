@@ -11,7 +11,7 @@ urlpatterns = [
     path("upcoming_movie/<int:pk>/", views.upcoming_movie, name = 'upcoming-movie'),
     path("tomorrow/", views.tomorrow, name = "tomorrow"),
     path("seat_booking/<int:pk>/<str:tom>/<str:showtime>/", views.seat_booking, name = 'seat-booking'),
-    path("profile/", views.profile, name = "profile")
+    path("profile/<int:pk>/", views.profile, name = "profile")
 ]
 if settings.DEBUG:
     urlpatterns += static(settings.STATIC_URL,

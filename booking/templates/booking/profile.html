@@ -7,21 +7,12 @@
     }
     
     .card {
-        width: 350px;
+        width: 1000px;
         background-color: #efefef;
         border: none;
         cursor: pointer;
         transition: all 0.5s;
     }
-    
-    .image img {
-        transition: all 0.5s
-    }
-    
-    .card:hover .image img {
-        transform: scale(1.5)
-    }
-    
     .btn {
         height: 140px;
         width: 140px;
@@ -32,27 +23,7 @@
         font-size: 22px;
         font-weight: bold
     }
-    
-    .idd {
-        font-size: 14px;
-        font-weight: 600
-    }
-    
-    .idd1 {
-        font-size: 12px
-    }
-    
-    .number {
-        font-size: 22px;
-        font-weight: bold
-    }
-    
-    .follow {
-        font-size: 12px;
-        font-weight: 500;
-        color: #444444
-    }
-    
+
     .btn1 {
         height: 40px;
         width: 150px;
@@ -68,38 +39,64 @@
         font-weight: 500
     }
     
-    .icons i {
-        font-size: 19px
-    }
+
     
-    hr .new1 {
-        border: 1px solid
-    }
-    
-    .join {
-        font-size: 14px;
-        color: #a0a0a0;
-        font-weight: bold
-    }
-    
-    .date {
-        background-color: #ccc
-    }
+    .ticket_detail {
+        margin-top: 25px;
+        margin-left: 5%;
+      }
+      .ticket_detail td,
+      .ticket_detail tr,
+      .ticket_detail table,
+      .ticket_detail th {
+        border: 1px solid black;
+        text-align: center;
+      }
+      .ticket_detail th {
+        font-size: 20px;
+      }
+      .ticket_detail td {
+        font-size: 19px;
+      }
+      .ticket_detail td,
+      .ticket_detail tr,
+      .ticket_detail th {
+        width: 300px;
+        height: 50px;
+      }
 </style>
 <div class="container mt-4 mb-4 p-3 d-flex justify-content-center"> 
     <div class="card p-4"> 
         <div class=" image d-flex flex-column justify-content-center align-items-center"> 
-            <button class="btn btn-secondary"> 
-            <img src="https://i.imgur.com/wvxPV9S.png" height="100" width="100" />
-            </button> 
-            <span class="name mt-3">Eleanor Pena</span> 
-            <span class="idd">@eleanorpena</span>  
+            <span class="name mt-3">Name: {{ user.first_name }} {{ user.last_name }}</span> 
+            <span class="name mt-3">Email: {{ user.email }}</span> 
             <div class=" d-flex mt-2"> 
                 <button class="btn1 btn-dark">Edit Profile</button> 
             </div> 
-            <div class="text mt-3"> 
-                <span>Eleanor Pena is a creator of minimalistic x bold graphics and digital artwork.<br><br> Artist/ Creative Director by Day #NFT minting@ with FND night. 
-                </span> 
+            <div class="ticket_detail mt-3"> 
+                {% if booked %}
+                <h2>Booked seats</h2>
+                <table>
+                    <tr>
+                        <th>Movie</th>
+                        <th>Time</th>
+                        <th>Date</th>
+                        <th>Seat number</th>
+                        <th>Price</th>
+                    </tr>
+                    {% for book in booked %}
+                    <tr>
+                    <td>{{book.show.movie.movie_name}}</td>
+                    <td>{{ book.time.time }}</td>
+                    <td>{{ book.time.date }}</td>
+                    <td>{{ book.seat }}</td>
+                    <td>Rs. 250</td>
+                    </tr>
+                    {% endfor %}
+                </table>
+                {% else %}
+                <h2>No booking till now</h2>
+                {% endif %}
             </div> 
         </div> 
     </div>

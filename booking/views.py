@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
 from admin_page.models import Movie, NowShowing, ShowTime, Booked
+from user.models import User
 from datetime import datetime, timedelta
 from django.db.models import Count
 import json
@@ -57,6 +58,8 @@ def seat_booking(request, pk, tom, showtime):
     return render(request,"booking/seat_booking.html", {'movie': movie, "now_showing_movies": now_showing_movies,"tomm": tomm, "seat_range": seat_range , "showtime_obj": showtime_obj.time, "booked_seats": booked_seats})
 
 
-def profile(request):
-    return render(request, "booking/profile.html")
+def profile(request, pk):
+    user = User.objects.filter(id = pk).first()
+    booked = Booked.objects.filter(user = user)
+    return render(request, "booking/profile.html", {"user": user, "booked": booked})
 
