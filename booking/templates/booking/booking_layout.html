@@ -11,8 +11,15 @@
     <style>
       body {
         overflow-x: hidden;
+        height: 100%;
+        margin: 0;
+        padding: 0;
       }
       .navbar_movie {
+        position: sticky;
+        top:  0;
+        z-index: 500;
+        background: white;
         display: flex;
         padding: 20px;
         box-shadow: 0 10px 5px -2px rgba(0, 0, 0, 0.2);
@@ -43,12 +50,22 @@
       .name div {
         cursor: pointer;
       }
+      .wrapper {
+        min-height: 100vh;
+        position: relative;
+        margin-bottom: -120px; /* Adjust this value based on the height of your footer */
+      }
+      
       .main {
         margin: 40px;
+        margin-bottom: 120px; /* Should match the negative margin in .wrapper */
+        padding-bottom: 20%;
       }
       .footer_movie {
-        margin: 25px -8px -8px -8px;
+        position: absolute;
+        bottom: 0;
         overflow-y: hidden;
+        width: 100%;
         background-color: black;
         display: flex;
         color: white;
@@ -96,6 +113,7 @@
     ></script>
   </head>
   <body>
+    <div class = "wrapper">
     <div class="navbar_movie">
       <div class="name">
         <div style="margin: 0px 5px; color: red">Hamro</div>
@@ -162,7 +180,7 @@
       </div>
     </div>
     {% if messages %}
-    <div style="overflow-x: hidden" class="messages">
+    <div style="overflow-x: hidden margin-top: 10px;" class="messages">
       {% for message in messages %}
       <div class="alert alert-{{message.tags}}">{{ message }}</div>
       {% endfor %}
@@ -188,5 +206,6 @@
         </ul>
       </div>
     </div>
+  </div>
   </body>
 </html>

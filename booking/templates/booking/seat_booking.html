@@ -192,11 +192,25 @@
 </div>
 <div id="all-showtime">
   {% for now_showing_movie in now_showing_movies.show_time.all|dictsort:"time"%}
+  {% if tomm %}
   <div class="times">
     <a href="{% url 'seat-booking' movie.id tomm now_showing_movie.time %}"
       ><button type="button">{{ now_showing_movie.time }}</button></a
     >
   </div>
+  {% else %}
+  {%if current_time > now_showing_movie.time%}
+  <div class="times">
+      <button type="button" style = "background-color: red">{{ now_showing_movie.time }}</button>
+  </div>
+  {%else%}
+  <div class="times">
+    <a href="{% url 'seat-booking' movie.id tomm now_showing_movie.time %}"
+      ><button type="button">{{ now_showing_movie.time }}</button></a
+    >
+  </div>
+  {% endif %}
+  {% endif %}
   {% endfor %}
 </div>
 <div class="seat_div" style="border-top: 1px solid black">

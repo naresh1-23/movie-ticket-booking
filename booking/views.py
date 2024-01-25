@@ -18,8 +18,9 @@ def home(request):
     delete_showtime.delete()
     movies = Movie.objects.filter(releasing_date__gt = datetime.now().date())
     now_showing_movies = NowShowing.objects.filter(running_date=datetime.now().date())
+    current_time = datetime.now().time()
     tom = False
-    return render(request, "booking/home.html", {"movies": movies, "now_showing_movies": now_showing_movies, "tom": tom})
+    return render(request, "booking/home.html", {"movies": movies, "now_showing_movies": now_showing_movies, "tom": tom, "current_time": current_time})
 
 
 def upcoming_movie(request, pk):
@@ -37,6 +38,7 @@ def tomorrow(request):
 def seat_booking(request, pk, tom, showtime):
     movie = Movie.objects.filter(id = pk).first()
     showtime_obj = ShowTime.objects.filter(time = showtime).first()
+    current_time = datetime.now().time()
     if tom == 'True':
         tomorrow = datetime.now().date() + timedelta(days=1)
         now_showing_movies = NowShowing.objects.filter(running_date=tomorrow, movie=movie).first()
@@ -56,7 +58,7 @@ def seat_booking(request, pk, tom, showtime):
         return redirect("home")
     booked_seats = serialize('json',Booked.objects.filter(show = now_showing_movies, time=showtime_obj))
     seat_range = [1,2,3,4,5,6,7,8]
-    return render(request,"booking/seat_booking.html", {'movie': movie, "now_showing_movies": now_showing_movies,"tomm": tomm, "seat_range": seat_range , "showtime_obj": showtime_obj.time, "booked_seats": booked_seats})
+    return render(request,"booking/seat_booking.html", {"current_time":current_time,'movie': movie, "now_showing_movies": now_showing_movies,"tomm": tomm, "seat_range": seat_range , "showtime_obj": showtime_obj.time, "booked_seats": booked_seats})
 
 
 def profile(request, pk):
